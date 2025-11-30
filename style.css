@@ -22,6 +22,7 @@ html,body{
   -webkit-font-smoothing:antialiased;
 }
 .screen{min-height:100vh;}
+.hidden{display:none!important}
 
 /* LOGIN layout */
 .screen-login{display:flex;align-items:center;justify-content:center;padding:20px}
@@ -38,7 +39,7 @@ html,body{
   text-align:center;
 }
 .brand{margin-bottom:10px}
-.brand-sub{font-size:12px;color:var(--muted);margin-bottom:6px}
+.brand-sub{font-size:12px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;}
 .brand-main{font-size:34px;font-weight:700;color:var(--accent-orange);letter-spacing:1px}
 
 /* login form */
@@ -85,45 +86,72 @@ html,body{
   padding:10px 12px 80px 12px;
   display:flex;
   flex-direction:column;
-  /* removido align-items:center (causava centralização estreita) */
   align-items:stretch;
 }
 
 /* CARD — expandir para 100% da tela */
 .card{
   width:100%;
-  max-width:100% !important; /* antes era 640px */
+  max-width:100% !important;
   border-radius:18px;
-  padding:14px;
+  padding:18px;
   background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
   border:1px solid var(--glass-border);
   box-shadow:0 12px 36px rgba(0,0,0,0.6);
 }
 
 .card-title{
-  text-align:center;color:var(--accent-orange);
-  font-weight:800;margin:6px 0 12px 0;
+  text-align:center;
+  color:var(--accent-orange);
+  font-weight:900;
+  font-size:20px;
+  margin:6px 0 16px 0;
+  text-transform:uppercase;
 }
 
-/* helpers */
-.row{display:flex;gap:10px;margin-bottom:12px}
-.row .input{flex:1}
+/* LABEL — CAIXA ALTA */
+.label{
+  display:block;
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:6px;
+  text-transform:uppercase;
+  font-weight:700;
+}
+
+/* ======================================================
+   REGISTRAR & ABASTECER — FORMATO LISTA
+   ====================================================== */
+#screen-register .grid-2, 
+#screen-register .grid-3,
+#screen-abastecer .grid-2,
+#screen-abastecer .grid-3{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:14px !important;
+}
+
+#screen-register .grid-2 > div,
+#screen-register .grid-3 > div,
+#screen-abastecer .grid-2 > div,
+#screen-abastecer .grid-3 > div{
+  display:flex;
+  flex-direction:column;
+}
+
+/* GHOS BUTTON */
 .btn-ghost{
   background:transparent;border:1px solid rgba(255,255,255,0.04);
   padding:10px 12px;border-radius:10px;color:var(--muted);cursor:pointer;
 }
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
-.label{display:block;color:var(--muted);font-size:13px;margin-bottom:6px}
-.gap-12{gap:12px}
 
-/* action buttons */
+/* DANGER BUTTON */
 .btn-danger{
   background: linear-gradient(180deg,var(--danger), #b61f1f);
   color:#fff;border:none;padding:12px;border-radius:12px;cursor:pointer;
 }
 
-/* tables */
+/* TABLES */
 .table-wrap{overflow:auto;margin-top:10px;width:100%;}
 .table{
   width:100%;
@@ -133,6 +161,7 @@ html,body{
 .table thead th{
   padding:10px;text-align:center;color:var(--muted);
   background:rgba(255,255,255,0.02);font-weight:800;
+  text-transform:uppercase;
 }
 .table td{
   padding:10px;text-align:center;
@@ -140,9 +169,16 @@ html,body{
   font-size:13px;color:var(--white);
 }
 
+/* FEFO & conferência status */
+.row-faltando td{background:rgba(255,70,70,0.18)}
+.row-sobrando td{background:rgba(0,200,255,0.12)}
+.color-red td{background:rgba(255,60,60,0.13)}
+.color-amber td{background:rgba(255,150,0,0.13)}
+.color-green td{background:rgba(60,255,150,0.12)}
+
 /* small screens */
 @media (max-width:480px){
-  .card{padding:12px;border-radius:16px;}
+  .card{padding:14px;border-radius:16px;}
   .table{min-width:520px}
   .brand-main{font-size:28px}
   .nav{gap:6px;padding:8px}
@@ -150,13 +186,75 @@ html,body{
 }
 
 /* desktop ONLY */
-@media (min-width:900px) and (hover: hover) and (pointer: fine){
-  body{
-    background:linear-gradient(180deg,#07182a,#041026);
-  }
+@media (min-width:900px) and (hover:hover){
   .main{padding:20px;}
   .card{border-radius:18px;}
 }
 
-/* hidden */
-.hidden{display:none!important}
+/* ============================================================
+   AJUSTE ESPECÍFICO – TELA ABASTECER (MESMO PADRÃO DA TELA REGISTRAR)
+   ============================================================ */
+
+/* Aumenta o espaçamento entre TODOS os blocos da tela */
+#screen-abastecer .card > * {
+  margin-bottom: 14px !important;
+}
+
+/* Ajusta blocos internos para espaçamento correto */
+#screen-abastecer .label {
+  margin-bottom: 6px !important;
+}
+
+#screen-abastecer .input,
+#screen-abastecer select {
+  margin-bottom: 14px !important;
+}
+
+/* Linha de BUSCAR (input + botão) */
+#screen-abastecer .row {
+  gap: 12px !important;
+  margin-bottom: 14px !important;
+}
+
+#screen-abastecer .row .input {
+  margin-bottom: 0 !important;
+}
+
+/* Botão BUSCAR com espaço */
+#screen-abastecer .btn-ghost {
+  margin-top: 0 !important;
+}
+
+/* Produtos, lote e validade com respiro */
+#screen-abastecer select,
+#screen-abastecer input {
+  margin-bottom: 14px !important;
+}
+
+/* Quantidade com espaçamento extra */
+#screen-abastecer #ab_caixas {
+  margin-top: 4px !important;
+  margin-bottom: 16px !important;
+}
+
+/* Botões ADICIONAR e RETIRAR */
+#screen-abastecer .btn-primary,
+#screen-abastecer .btn-danger {
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+}
+
+
+
+/* Ensure selects and options are readable */
+.input, select.input {
+  background: rgba(255,255,255,0.04) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+}
+select.input { padding-right: 1.5rem; }
+/* table FEFO highlight */
+tr.color-red { background: rgba(255,60,60,0.12); }
+tr.color-red td { color: #fff; }
+/* option readability (may be ignored by some browsers) */
+select.input option { background: #0b2536; color: #fff; }
