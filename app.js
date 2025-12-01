@@ -3,7 +3,7 @@
 // Atualizado: corrige lógica STATUS na CONFERÊNCIA (ERP - APP)
 // ================================================================
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8nzS41FwEvecmWBSFLsAcxVij68jiKf_xH59jigYL2eS2pNyb_1jcYgxeoskwJsBc9Q/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbynbHTm3A_7rOqcZjPesedwBvgYI7c3rRvjhdwum4HOgJb2IR6aGwZOL0qlz88fUkZi/exec";
 
 const qs  = (sel)=>document.querySelector(sel);
 const qsa = (sel)=>Array.from(document.querySelectorAll(sel));
