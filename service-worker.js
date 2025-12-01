@@ -1,44 +1,47 @@
-const CACHE_NAME = 'wms-cache-v1';
-
-const urlsToCache = [
-  './',
-  './index.html',
-  './app.js',
-  './style.css',
-  './manifest.json',
-  './icons/icon-72.png',
-  './icons/icon-96.png',
-  './icons/icon-128.png',
-  './icons/icon-144.png',
-  './icons/icon-152.png',
-  './icons/icon-192.png',
-  './icons/icon-384.png',
-  './icons/icon-512.png'
+// Updated service-worker to force new cache version
+const CACHE_NAME = 'wms-cache-v2';
+const ASSETS_TO_CACHE = [
+  '/',
+  '/index.html',
+  '/app.js',
+  '/style.css',
+  '/manifest.json',
+  '/favicon.ico'
 ];
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(ASSETS_TO_CACHE))
+      .catch(err => console.error('SW install failed', err))
   );
   self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys
-          .filter(key => key !== CACHE_NAME)
-          .map(oldKey => caches.delete(oldKey))
-      )
-    )
+    caches.keys().then(keys => Promise.all(
+      keys.map(key => {
+        if (key !== CACHE_NAME) return caches.delete(key);
+      })
+    ))
   );
   self.clients.claim();
 });
 
 self.addEventListener('fetch', event => {
+  const req = event.request;
+  // prefer network for API calls, cache for static assets
+  if (req.url.includes('/exec') || req.method !== 'GET') {
+    event.respondWith(fetch(req).catch(()=>caches.match(req)));
+    return;
+  }
   event.respondWith(
-    caches.match(event.request)
-      .then(response => response || fetch(event.request))
+    caches.match(req).then(cached => {
+      return cached || fetch(req).then(resp => {
+        // optionally cache fetched asset
+        return resp;
+      }).catch(()=>caches.match('/index.html'));
+    })
   );
 });
